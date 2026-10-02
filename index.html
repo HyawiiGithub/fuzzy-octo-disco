@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCCP — UNION OF TOMORROW | Soviet Constructivist Experience</title>
+<meta name="description" content="A smooth, animated Soviet constructivist single-file website.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Rubik+Mono+One&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --red:#D20A0A;
+  --red-dark:#8E0505;
+  --red-deep:#4A0404;
+  --cream:#F3E9D2;
+  --paper:#EFE1C2;
+  --black:#111010;
+  --ink:#1A1512;
+  --gold:#E8B44A;
+  --gold-light:#FFD97A;
+  --line:3px solid #111010;
+  --shadow:8px 8px 0 #111010;
+  --shadow-sm:5px 5px 0 #111010;
+}
+html{scroll-behavior:auto}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{
+  background:var(--cream);
+  color:var(--ink);
+  font-family:'Oswald',sans-serif;
+  overflow-x:hidden;
+  cursor:none;
+}
+@media(pointer:coarse){body{cursor:auto}.cursor,.cursor-ring{display:none!important}}
+::selection{background:var(--red);color:var(--cream)}
+::-webkit-scrollbar{width:12px}
+::-webkit-scrollbar-track{background:var(--black)}
+::-webkit-scrollbar-thumb{background:var(--red);border:2px solid var(--black)}
+#progress{position:fixed;top:0;left:0;height:5px;width:0%;background:linear-gradient(90deg,var(--gold),var(--red));z-index:9999;border-right:3px solid var(--black)}
+.grain{position:fixed;inset:-50%;width:200%;height:200%;pointer-events:none;z-index:9000;opacity:.09;
+background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+animation:grain 8s steps(10) infinite}
+@keyframes grain{0%,100%{transform:translate(0,0)}10%{transform:translate(-5%,-8%)}20%{transform:translate(-12%,3%)}30%{transform:translate(6%,-10%)}40%{transform:translate(-4%,12%)}50%{transform:translate(-10%,4%)}60%{transform:translate(12%,0)}70%{transform:translate(0,10%)}80%{transform:translate(3%,12%)}90%{transform:translate(-8%,8%)}}
+.cursor{position:fixed;top:0;left:0;width:14px;height:14px;background:var(--red);border:2px solid var(--black);z-index:10001;pointer-events:none;transform:translate(-50%,-50%) rotate(45deg);transition:width .25s,height .25s,background .25s}
+.cursor-ring{position:fixed;top:0;left:0;width:44px;height:44px;border:2px solid var(--red);z-index:10000;pointer-events:none;transform:translate(-50%,-50%) rotate(45deg);transition:width .3s,height .3s,transform .15s linear}
+.cursor.hovering{width:54px;height:54px;background:var(--gold);mix-blend-mode:normal}
+#preloader{position:fixed;inset:0;background:var(--black);z-index:20000;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--cream);transition:clip-path 1s cubic-bezier(.87,0,.13,1)}
+#preloader.done{clip-path:inset(0 0 100% 0)}
+.pre-star{width:90px;height:90px;animation:spinStar 3s linear infinite;filter:drop-shadow(0 0 20px var(--red))}
+@keyframes spinStar{to{transform:rotate(360deg)}}
+.pre-num{font-family:'Russo One';font-size:clamp(4rem,12vw,8rem);line-height:1;color:var(--cream);margin:1rem 0 .2rem}
+.pre-num span{color:var(--red)}
+.pre-bar{width:min(420px,70vw);height:14px;border:3px solid var(--cream);padding:2px}
+.pre-bar-fill{height:100%;width:0%;background:repeating-linear-gradient(-45deg,var(--red) 0 10px,var(--gold) 10px 20px)}
+.pre-text{letter-spacing:.45em;font-size:.75rem;margin-top:1rem;opacity:.8}
+.topbar{background:var(--black);color:var(--cream);font-size:.78rem;letter-spacing:.18em;display:flex;justify-content:space-between;align-items:center;padding:.55rem 1.2rem;text-transform:uppercase;position:relative;z-index:100;border-bottom:3px solid var(--black)}
+.topbar b{color:var(--gold)}
+.dot-live{display:inline-block;width:9px;height:9px;background:#2bff5a;border-radius:50%;margin-right:.5rem;animation:blink 1s infinite}
+@keyframes blink{50%{opacity:.2}}
+nav{position:sticky;top:0;z-index:500;background:var(--cream);border-bottom:var(--line);display:flex;align-items:stretch;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:.7rem;padding:.7rem 1.2rem;background:var(--red);color:var(--cream);border-right:var(--line);font-family:'Russo One';font-size:1.15rem;letter-spacing:.05em;white-space:nowrap}
+.brand svg{width:34px;height:34px}
+.nav-links{display:flex;align-items:stretch;flex:1;justify-content:center}
+.nav-links a{text-decoration:none;color:var(--ink);font-weight:600;letter-spacing:.14em;font-size:.82rem;text-transform:uppercase;display:flex;align-items:center;padding:0 1.3rem;border-right:2px solid #11101022;position:relative;overflow:hidden;transition:color .3s}
+.nav-links a::before{content:'';position:absolute;inset:0;background:var(--black);transform:scaleY(0);transform-origin:bottom;transition:transform .35s cubic-bezier(.65,0,.35,1);z-index:-1}
+.nav-links a:hover{color:var(--cream)}
+.nav-links a:hover::before{transform:scaleY(1)}
+.nav-links a.active{color:var(--red)}
+.nav-cta{display:flex;align-items:center;padding:0 1.2rem}
+.btn{font-family:'Oswald';font-weight:700;letter-spacing:.14em;text-transform:uppercase;border:var(--line);padding:.75rem 1.6rem;background:var(--ink);color:var(--cream);box-shadow:var(--shadow-sm);cursor:none;position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:.6rem;text-decoration:none;transition:transform .2s,box-shadow .2s;font-size:.9rem}
+.btn::after{content:'';position:absolute;top:0;left:-80%;width:50%;height:100%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.45),transparent);transform:skewX(-20deg)}
+.btn:hover::after{animation:shine .7s}
+@keyframes shine{to{left:130%}}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 #111010}
+.btn:active{transform:translate(3px,3px);box-shadow:0 0 0 #111010}
+.btn-red{background:var(--red)}
+.btn-gold{background:var(--gold);color:var(--black)}
+.btn-cream{background:var(--cream);color:var(--black)}
+.burger{display:none;background:var(--black);color:var(--cream);border:none;border-left:var(--line);padding:0 1.2rem;font-size:1.6rem;cursor:pointer}
+.hero{position:relative;min-height:94vh;background:var(--red);color:var(--cream);overflow:hidden;display:grid;grid-template-columns:1.15fr .85fr;border-bottom:var(--line)}
+.sunburst{position:absolute;top:50%;left:28%;width:160vmax;height:160vmax;transform:translate(-50%,-50%);background:repeating-conic-gradient(from 0deg, rgba(0,0,0,.11) 0 6deg, transparent 6deg 12deg);animation:spinSlow 80s linear infinite;pointer-events:none}
+@keyframes spinSlow{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.hero-left{position:relative;padding:clamp(2rem,5vw,4.5rem);display:flex;flex-direction:column;justify-content:center;z-index:2;border-right:var(--line)}
+.stamp{display:inline-flex;align-items:center;gap:.7rem;background:var(--black);color:var(--gold);padding:.5rem 1rem;font-size:.8rem;letter-spacing:.28em;text-transform:uppercase;border:2px solid var(--gold);transform:rotate(-2deg);width:fit-content;margin-bottom:1.5rem;box-shadow:5px 5px 0 rgba(0,0,0,.35)}
+.stamp i{width:10px;height:10px;background:var(--red);display:inline-block;transform:rotate(45deg)}
+h1.hero-title{font-family:'Russo One';font-size:clamp(3.2rem,9vw,8.5rem);line-height:.9;text-transform:uppercase}
+h1 .outline{color:transparent;-webkit-text-stroke:3px var(--cream)}
+h1 .gold{color:var(--gold);position:relative;display:inline-block}
+h1 .gold::after{content:'';position:absolute;left:0;bottom:6px;height:14px;width:100%;background:var(--black);z-index:-1;transform:skewX(-12deg)}
+.hero-sub{max-width:520px;margin:1.6rem 0 2rem;font-size:1.12rem;line-height:1.6;font-weight:400;opacity:.95}
+.hero-sub strong{background:var(--black);padding:0 .4rem;color:var(--gold)}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap}
+.hero-meta{display:flex;gap:0;margin-top:2.5rem;border:var(--line);background:var(--cream);color:var(--black);width:fit-content;box-shadow:var(--shadow)}
+.hero-meta div{padding:.9rem 1.4rem;text-align:center;border-right:var(--line)}
+.hero-meta div:last-child{border:none}
+.hero-meta b{font-family:'Russo One';font-size:1.5rem;display:block}
+.hero-meta span{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;opacity:.7}
+.hero-right{position:relative;background:var(--black);display:flex;align-items:center;justify-content:center;overflow:hidden;min-height:480px}
+.poster-big{position:relative;width:min(420px,78%);aspect-ratio:3/4;background:var(--paper);border:4px solid var(--cream);box-shadow:20px 20px 0 var(--red-dark), 20px 20px 0 4px var(--cream);transform:rotate(3deg);display:flex;flex-direction:column;overflow:hidden;transition:transform .5s}
+.hero-right:hover .poster-big{transform:rotate(0deg) scale(1.02)}
+.poster-big-top{background:var(--red);color:var(--cream);text-align:center;padding:1rem;font-family:'Russo One';letter-spacing:.1em;border-bottom:4px solid var(--black)}
+.poster-worker{flex:1;background:
+  radial-gradient(circle at 50% 28%, #FFD9B3 0 58px, transparent 59px),
+  linear-gradient(#22335e 0 0) 50% 52%/120px 90px no-repeat,
+  linear-gradient(var(--red) 0 0) 50% 100%/100% 42% no-repeat,
+  repeating-linear-gradient(-45deg, var(--gold) 0 18px, var(--black) 18px 36px);
+  position:relative;display:flex;align-items:flex-end;justify-content:center;padding-bottom:1rem}
+.poster-worker::before{content:'★';position:absolute;top:12px;right:14px;font-size:2rem;color:var(--gold)}
+.poster-worker::after{content:'ТРУД • МИР • МАЙ';position:absolute;bottom:42%;left:50%;transform:translateX(-50%) rotate(-4deg);background:var(--black);color:var(--cream);padding:.3rem .8rem;font-weight:700;letter-spacing:.2em;font-size:.75rem;white-space:nowrap}
+.poster-big-bottom{background:var(--cream);border-top:4px solid var(--black);padding:1rem;text-align:center}
+.poster-big-bottom b{font-family:'Russo One';font-size:1.3rem}
+.float-star{position:absolute;font-size:2rem;color:var(--gold);animation:float 4s ease-in-out infinite;z-index:3}
+@keyframes float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-18px) rotate(20deg)}}
+.diag{position:absolute;bottom:-1px;left:0;width:100%;height:70px;background:var(--black);clip-path:polygon(0 100%,100% 100%,100% 0,0 100%);z-index:2}
+.marquee{background:var(--black);color:var(--cream);border-top:var(--line);border-bottom:var(--line);overflow:hidden;white-space:nowrap;padding:.9rem 0;position:relative}
+.marquee-track{display:inline-flex;gap:0;animation:marquee 22s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee span{font-family:'Russo One';font-size:1.25rem;letter-spacing:.12em;padding:0 1.5rem;display:inline-flex;align-items:center;gap:1.5rem}
+.marquee span::after{content:'★';color:var(--red);font-size:1.4rem}
+.marquee.gold{background:var(--gold);color:var(--black)}
+.marquee.gold span::after{color:var(--red)}
+@keyframes marquee{to{transform:translateX(-50%)}}
+section{position:relative}
+.wrap{max-width:1240px;margin:0 auto;padding:clamp(3rem,7vw,6rem) 1.5rem}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:1.5rem;margin-bottom:2.5rem;flex-wrap:wrap}
+.sec-num{font-family:'Russo One';background:var(--black);color:var(--gold);padding:.4rem .9rem;font-size:.9rem;letter-spacing:.2em;display:inline-block;margin-bottom:.9rem;transform:rotate(-1.5deg)}
+h2.sec-title{font-family:'Russo One';font-size:clamp(2.2rem,5vw,4.2rem);line-height:.95;text-transform:uppercase}
+h2.sec-title em{font-style:normal;color:var(--red);position:relative}
+.sec-desc{max-width:380px;font-size:1rem;line-height:1.6;opacity:.85;border-left:5px solid var(--red);padding-left:1rem}
+.reveal{opacity:0;transform:translateY(50px)}
+.manifesto{background:var(--cream);position:relative}
+.manifesto::before{content:'☭';position:absolute;right:-20px;top:20px;font-size:22rem;opacity:.05;line-height:1;pointer-events:none}
+.m-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem}
+.m-card{background:var(--paper);border:var(--line);box-shadow:var(--shadow-sm);padding:1.8rem;position:relative;overflow:hidden;transition:transform .35s,box-shadow .35s}
+.m-card:nth-child(1){transform:rotate(-1deg)}
+.m-card:nth-child(2){transform:rotate(.8deg);background:var(--black);color:var(--cream)}
+.m-card:nth-child(3){transform:rotate(-.6deg)}
+.m-card:hover{transform:rotate(0) translateY(-8px)!important;box-shadow:10px 10px 0 #111010}
+.m-card h3{font-family:'Russo One';font-size:1.4rem;margin:.9rem 0 .6rem;text-transform:uppercase}
+.m-card p{line-height:1.6;opacity:.9}
+.m-icon{width:58px;height:58px;background:var(--red);border:var(--line);display:grid;place-items:center;font-size:1.7rem;color:var(--cream);box-shadow:4px 4px 0 #111010}
+.m-card:nth-child(2) .m-icon{background:var(--gold);color:var(--black)}
+.m-card .big-bg{position:absolute;bottom:-18px;right:6px;font-family:'Russo One';font-size:5rem;opacity:.08;line-height:1}
+.stats{background:var(--black);color:var(--cream);border-top:var(--line);border-bottom:var(--line);position:relative;overflow:hidden}
+.stats::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 79px,rgba(255,255,255,.06) 79px 80px);pointer-events:none}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;position:relative;z-index:1}
+.stat{border:3px solid var(--cream);padding:1.8rem 1.2rem;text-align:center;background:#161111;position:relative}
+.stat:nth-child(even){background:var(--red);transform:translateY(12px)}
+.stat b{font-family:'Russo One';font-size:clamp(2rem,4vw,3.2rem);color:var(--gold);display:block}
+.stat:nth-child(even) b{color:var(--cream)}
+.stat span{letter-spacing:.22em;font-size:.72rem;text-transform:uppercase;opacity:.85}
+.timeline-sec{background:var(--paper)}
+.tl{position:relative;max-width:860px;margin:0 auto;padding-left:2rem}
+.tl::before{content:'';position:absolute;left:22px;top:0;bottom:0;width:6px;background:var(--black)}
+#tl-progress{position:absolute;left:22px;top:0;width:6px;background:var(--red);height:0%;box-shadow:0 0 12px var(--red)}
+.tl-item{position:relative;margin-bottom:1.4rem;background:var(--cream);border:var(--line);box-shadow:var(--shadow-sm);padding:1.5rem 1.5rem 1.5rem 3.5rem;margin-left:2rem}
+.tl-item::before{content:'★';position:absolute;left:-2.9rem;top:1.2rem;width:44px;height:44px;background:var(--gold);border:var(--line);display:grid;place-items:center;font-size:1.2rem;transform:rotate(45deg);z-index:1}
+.tl-item h4{font-family:'Russo One';font-size:1.3rem}
+.tl-item h4 small{background:var(--red);color:#fff;padding:.15rem .6rem;margin-right:.7rem;font-size:.95rem}
+.tl-item p{margin-top:.5rem;line-height:1.6;opacity:.9}
+.posters{background:var(--red);color:var(--cream);border-top:var(--line);border-bottom:var(--line);overflow:hidden}
+.posters h2.sec-title{color:var(--cream)}
+.posters h2.sec-title em{color:var(--gold)}
+.posters .sec-desc{color:var(--cream);border-color:var(--gold)}
+.p-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem}
+.p-card{aspect-ratio:3/4;border:4px solid var(--black);box-shadow:8px 8px 0 var(--black);position:relative;overflow:hidden;background:var(--cream);color:var(--black);transform-style:preserve-3d;transition:box-shadow .3s}
+.p-card:hover{box-shadow:12px 12px 0 var(--black)}
+.p-art{height:68%;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.p-art strong{font-family:'Russo One';font-size:2.1rem;text-align:center;line-height:1;padding:0 1rem;z-index:2;position:relative}
+.p1{background:radial-gradient(circle at 50% 120%, var(--gold) 0 40%, transparent 41%), linear-gradient(var(--black),var(--black)) 50% 0/100% 32% no-repeat, var(--cream)}
+.p2{background:repeating-linear-gradient(45deg,var(--black) 0 20px,var(--red) 20px 40px)}
+.p2 strong{background:var(--cream);border:var(--line);padding:.6rem}
+.p3{background:radial-gradient(circle at 50% 30%, var(--red) 0 90px, var(--black) 91px 92px, transparent 93px), linear-gradient(#1a1a1a,#1a1a1a)}
+.p3 strong{color:var(--gold)}
+.p4{background:conic-gradient(from 0deg at 50% 70%, var(--gold) 0 20deg, var(--cream) 20deg 40deg, var(--gold) 40deg 60deg, var(--cream) 60deg 80deg, var(--gold) 80deg 100deg, var(--cream) 100deg 120deg, var(--gold) 120deg 140deg, var(--cream) 140deg 160deg, var(--gold) 160deg 180deg, var(--cream) 180deg 200deg, var(--gold) 200deg 220deg, var(--cream) 220deg 240deg, var(--gold) 240deg 260deg, var(--cream) 260deg 280deg, var(--gold) 280deg 300deg, var(--cream) 300deg 320deg, var(--gold) 320deg 340deg, var(--cream) 340deg 360deg)}
+.p5{background:linear-gradient(var(--red) 0 55%, var(--black) 55% 100%)}
+.p5 strong{color:#fff}
+.p6{background:repeating-linear-gradient(-45deg, var(--cream) 0 22px, var(--black) 22px 24px)}
+.p6 strong{background:var(--red);color:#fff;padding:.5rem 1rem;transform:rotate(-4deg);border:3px solid #111}
+.p-cap{height:32%;background:var(--cream);border-top:4px solid var(--black);padding:1rem;display:flex;flex-direction:column;justify-content:center;gap:.3rem}
+.p-cap b{font-family:'Russo One';letter-spacing:.06em}
+.p-cap span{font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;opacity:.7}
+.fig-photo{position:absolute;right:10px;bottom:10px;width:88px;height:88px;object-fit:cover;border:3px solid #111;box-shadow:4px 4px 0 #111;background:#000;z-index:3}
+.inline-pic{width:100%;height:120px;object-fit:cover;border:var(--line);margin-top:.9rem;display:block;background:#000}
+.plan{background:var(--cream)}
+.plan-box{display:grid;grid-template-columns:320px 1fr;border:var(--line);box-shadow:var(--shadow);background:var(--paper);overflow:hidden}
+.tabs{display:flex;flex-direction:column;background:var(--black);color:var(--cream)}
+.tab-btn{background:transparent;border:none;border-bottom:2px solid #ffffff22;color:var(--cream);text-align:left;padding:1.3rem 1.4rem;font-family:'Oswald';font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:none;display:flex;justify-content:space-between;align-items:center;transition:.3s;font-size:.95rem}
+.tab-btn:hover{background:#ffffff14}
+.tab-btn.active{background:var(--red);color:#fff}
+.tab-content{padding:2.2rem}
+.tab-pane{display:none;animation:fadeUp .5s ease}
+.tab-pane.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.bar{margin:1.2rem 0}
+.bar-top{display:flex;justify-content:space-between;font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:.85rem;margin-bottom:.45rem}
+.bar-track{height:20px;border:var(--line);background:var(--cream);position:relative;overflow:hidden}
+.bar-fill{height:100%;width:0%;background:repeating-linear-gradient(-45deg,var(--red) 0 12px,var(--black) 12px 24px);transition:width 1.4s cubic-bezier(.22,1,.36,1)}
+.bar:nth-child(even) .bar-fill{background:repeating-linear-gradient(-45deg,var(--gold) 0 12px,var(--black) 12px 24px)}
+.factory{background:var(--black);color:var(--cream);overflow:hidden;border-top:var(--line)}
+.factory-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:center}
+.gears{position:relative;height:420px;border:3px solid var(--cream);background:radial-gradient(circle at 50% 50%, #221414 0 60%, #0e0b0b 61% 100%);overflow:hidden;display:grid;place-items:center}
+.gear{position:absolute;font-size:8rem;opacity:.9;animation:spinGear linear infinite}
+.g1{left:8%;top:10%;color:var(--red);animation-duration:10s}
+.g2{right:10%;top:30%;font-size:11rem;color:var(--gold);animation-duration:14s;animation-direction:reverse}
+.g3{left:30%;bottom:5%;font-size:6rem;color:var(--cream);animation-duration:8s}
+@keyframes spinGear{to{transform:rotate(360deg)}}
+.factory ul{list-style:none;margin-top:1.5rem;display:grid;gap:.9rem}
+.factory li{border:2px solid var(--cream);padding:.9rem 1.1rem;display:flex;gap:.9rem;align-items:center;background:#1a1512;transition:.3s}
+.factory li:hover{background:var(--red);transform:translateX(10px)}
+.factory li i{background:var(--gold);color:#000;width:36px;height:36px;display:grid;place-items:center;font-style:normal;font-weight:800;border:2px solid #000;flex-shrink:0}
+.voices{background:var(--gold);border-top:var(--line);border-bottom:var(--line)}
+.slider{border:var(--line);background:var(--cream);box-shadow:var(--shadow);padding:2.5rem;position:relative;overflow:hidden;min-height:260px;max-width:860px;margin:0 auto;transform:rotate(-.5deg)}
+.slide{display:none;animation:fadeUp .5s}
+.slide.active{display:block}
+.slide p{font-size:clamp(1.2rem,2.5vw,1.7rem);line-height:1.4;font-weight:500}
+.slide p::before{content:'“';font-family:'Russo One';font-size:3rem;color:var(--red);line-height:0;vertical-align:middle;margin-right:.4rem}
+.slide footer{margin-top:1.2rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-size:.85rem;background:none;border:none;color:var(--ink)}
+.slide footer span{color:var(--red)}
+.slide footer a{color:var(--red);text-decoration:none}
+.slide footer a:hover{color:var(--red-dark);text-decoration:underline}
+.slider-nav{display:flex;gap:.8rem;justify-content:center;margin-top:1.5rem}
+.s-dot{width:46px;height:14px;border:var(--line);background:var(--cream);cursor:none;transition:.3s}
+.s-dot.active{background:var(--red);transform:skewX(-12deg)}
+.join{background:var(--cream);position:relative;overflow:hidden}
+.join-card{display:grid;grid-template-columns:1fr 1fr;border:var(--line);box-shadow:12px 12px 0 var(--red);background:var(--black);color:var(--cream);overflow:hidden}
+.join-left{padding:3rem;background:var(--red);position:relative;overflow:hidden}
+.join-left::before{content:'CCCP';position:absolute;bottom:-30px;left:-10px;font-family:'Russo One';font-size:8rem;opacity:.15;line-height:1}
+.join-left h3{font-family:'Russo One';font-size:clamp(2rem,4vw,3rem);line-height:.95}
+.join-left p{margin:1rem 0 1.5rem;line-height:1.6}
+.id-card{background:var(--cream);color:var(--black);border:var(--line);padding:1rem;display:flex;gap:1rem;align-items:center;transform:rotate(-2deg)}
+.id-photo{width:72px;height:72px;background:conic-gradient(var(--red) 0 90deg, var(--gold) 90deg 180deg, var(--black) 180deg 270deg, var(--red) 270deg 360deg);border:3px solid #111;flex-shrink:0;display:grid;place-items:center;font-size:2rem}
+.join-right{padding:2.5rem;background:var(--paper);color:var(--black);display:flex;flex-direction:column;justify-content:center}
+.discord-box{border:var(--line);background:var(--cream);box-shadow:6px 6px 0 #111010;padding:1rem 1.2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;font-weight:700;letter-spacing:.06em}
+.discord-box code{font-family:'Oswald';font-size:1.05rem}
+footer{background:var(--black);color:var(--cream);border-top:6px solid var(--red);position:relative;overflow:hidden}
+.foot-big{font-family:'Russo One';font-size:clamp(4rem,15vw,13rem);text-align:center;line-height:.9;letter-spacing:.02em;color:transparent;-webkit-text-stroke:2px var(--cream);white-space:nowrap;user-select:none}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:1.5rem;max-width:1240px;margin:0 auto;padding:2rem 1.5rem 3rem}
+.foot-grid h5{letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.9rem;font-size:.85rem}
+.foot-grid a{display:block;color:var(--cream);text-decoration:none;opacity:.8;line-height:2;transition:.2s}
+.foot-grid a:hover{opacity:1;color:var(--gold);transform:translateX(6px)}
+.foot-bottom{border-top:2px solid #ffffff22;padding:1.2rem;text-align:center;font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;opacity:.7}
+#toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,150px) rotate(-2deg);background:var(--gold);color:var(--black);border:var(--line);box-shadow:var(--shadow-sm);padding:1rem 1.6rem;font-weight:700;letter-spacing:.1em;z-index:12000;transition:transform .5s cubic-bezier(.22,1,.36,1)}
+#toast.show{transform:translate(-50%,0) rotate(-2deg)}
+#toTop{position:fixed;right:20px;bottom:20px;width:58px;height:58px;background:var(--red);color:var(--cream);border:var(--line);box-shadow:var(--shadow-sm);font-size:1.5rem;z-index:6000;cursor:none;display:grid;place-items:center;opacity:0;pointer-events:none;transition:.3s}
+#toTop.show{opacity:1;pointer-events:auto}
+#toTop:hover{background:var(--black)}
+@media(max-width:1000px){
+  .hero{grid-template-columns:1fr}
+  .hero-left{border-right:none;border-bottom:var(--line)}
+  .m-grid,.stats-grid,.p-grid{grid-template-columns:1fr 1fr}
+  .factory-grid,.join-card{grid-template-columns:1fr}
+  .plan-box{grid-template-columns:1fr}
+  .tabs{flex-direction:row;overflow-x:auto}
+  .tab-btn{white-space:nowrap;border-bottom:none;border-right:2px solid #ffffff22}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .nav-links{display:none}
+  .burger{display:block}
+  .nav-links.mobile{display:flex;position:fixed;top:0;left:0;right:0;bottom:0;background:var(--black);flex-direction:column;justify-content:center;align-items:center;z-index:8000;gap:1rem}
+  .nav-links.mobile a{color:var(--cream);font-size:1.8rem;border:none;font-family:'Russo One'}
+  #closeMenu{position:absolute;top:18px;right:22px;background:var(--red);border:3px solid var(--cream);color:#fff;font-size:1.3rem;width:52px;height:52px;cursor:pointer}
+}
+@media(max-width:600px){.m-grid,.stats-grid,.p-grid{grid-template-columns:1fr}.hero-meta{flex-direction:column;width:100%}.hero-meta div{border-right:none;border-bottom:var(--line)}.hero-meta div:last-child{border:none}}
+.char{display:inline-block;transform:translateY(110%);opacity:0}
+.line-mask{overflow:hidden;display:inline-block;vertical-align:bottom}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div class="grain"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<div id="preloader">
+  <svg class="pre-star" viewBox="0 0 100 100"><polygon points="50,5 61,38 95,38 67,57 77,90 50,70 23,90 33,57 5,38 39,38" fill="#D20A0A" stroke="#F3E9D2" stroke-width="3"/></svg>
+  <div class="pre-num"><span id="preCount">0</span><span style="color:#F3E9D2;font-size:.35em"> %</span></div>
+  <div class="pre-bar"><div class="pre-bar-fill" id="preFill"></div></div>
+  <div class="pre-text">СОЮЗ • ТРУД • ПОБЕДА • UNION LOADING</div>
+</div>
+
+<div class="topbar">
+  <div><span class="dot-live"></span> MOSCOW <b id="clock">00:00:00</b> • ISSUE № 1917</div>
+  <div style="display:flex;gap:1.2rem"><span>ДА ЗДРАВСТВУЕТ ТРУД ★</span><span style="opacity:.6">EST. 2019</span></div>
+</div>
+
+<nav id="nav">
+  <div class="brand">
+    <svg viewBox="0 0 100 100"><polygon points="50,5 61,38 95,38 67,57 77,90 50,70 23,90 33,57 5,38 39,38" fill="#F3E9D2" stroke="#111" stroke-width="5"/><text x="50" y="62" text-anchor="middle" font-size="28" font-weight="900" fill="#D20A0A">☭</text></svg>
+    CCCP ★ UNION
+  </div>
+  <div class="nav-links" id="navLinks">
+    <button id="closeMenu" style="display:none">✕</button>
+    <a href="#manifesto" data-link>Doctrine</a>
+    <a href="#history" data-link>History</a>
+    <a href="#posters" data-link>Figures</a>
+    <a href="#plan" data-link>Government</a>
+    <a href="#factory" data-link>Forces</a>
+    <a href="https://discord.gg/soviets" target="_blank" rel="noopener" data-link>Enlist</a>
+  </div>
+  <div class="nav-cta">
+    <a href="https://discord.gg/soviets" target="_blank" rel="noopener" class="btn btn-red magnetic" style="padding:.6rem 1.2rem">★ Join ★</a>
+    <button class="burger" id="burger">☰</button>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="sunburst"></div>
+  <div class="hero-left">
+    <div class="stamp"><i></i> PROLETARIANS OF THE WORLD, UNITE! <i></i></div>
+    <h1 class="hero-title" id="heroTitle">KNOW<br><span class="outline">THE</span> <span class="gold">UNION</span><br>ТОВАРИЩ</h1>
+    <p class="hero-sub">The lore archive of the <strong>Discord U.S.S.R. mock-government</strong> — founded in 2019 by Leon Gazi and Shadow Hokaj, led today by Generalissimus Kewl Menzhinsky. Scroll, comrade. History scrolls with you.</p>
+    <div class="hero-btns">
+      <a href="#manifesto" class="btn btn-gold magnetic">▶ Read the Lore</a>
+      <a href="https://discord.gg/soviets" target="_blank" rel="noopener" class="btn btn-cream magnetic">★ Join Discord</a>
+    </div>
+    <div class="hero-meta">
+      <div><b data-count="2019">0</b><span>Founded</span></div>
+      <div><b><span data-count="13">0</span></b><span>Republics</span></div>
+      <div><b><span data-count="60">0</span></b><span>Days Longest Term</span></div>
+      <div><b>∞</b><span>Glory</span></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <span class="float-star" style="top:12%;left:12%">★</span>
+    <span class="float-star" style="top:18%;right:14%;animation-delay:1s">★</span>
+    <span class="float-star" style="bottom:16%;left:16%;animation-delay:2s;color:#D20A0A">★</span>
+    <div class="poster-big" id="tiltPoster">
+      <div class="poster-big-top">★ РАБОЧИЙ И КОЛХОЗНИЦА ★<br><span style="font-family:Oswald;font-size:.75rem;letter-spacing:.3em">WORKER AND FARMER — 1937</span></div>
+      <div class="poster-worker">
+        <div style="background:#111;color:#F3E9D2;padding:.6rem 1.2rem;font-family:'Russo One';z-index:2;border:3px solid #F3E9D2">ВПЕРЁД!</div>
+      </div>
+      <div class="poster-big-bottom"><b>DARE TO BUILD TOMORROW</b><br><span style="letter-spacing:.25em;font-size:.75rem">FIRST EDITION • PRINTED IN MOSCOW</span></div>
+    </div>
+  </div>
+  <div class="diag"></div>
+</header>
+
+<div class="marquee"><div class="marquee-track" id="mq1"></div></div>
+<div class="marquee gold"><div class="marquee-track" id="mq2"></div></div>
+
+<section class="manifesto" id="manifesto">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="sec-num">01 // ДОКТРИНА</div><h2 class="sec-title reveal">MORAL CODE,<br><em>IRON UNION</em></h2></div>
+      <p class="sec-desc reveal">This site is the lore archive of the Discord U.S.S.R. — a mock-government founded in 2019 and documented by its own Central Committee. Everything below is real server history.</p>
+    </div>
+    <div class="m-grid">
+      <div class="m-card reveal"><div class="m-icon">☭</div><h3>Moralistic Socialism</h3><p>The ruling doctrine. The Union moved from Marxism-Leninism to Moralistic Socialism under the MSPSU — order, morality and discipline as statecraft.</p><div class="big-bg">01</div></div>
+      <div class="m-card reveal"><div class="m-icon">★</div><h3>The Premier System</h3><p>Established March 6th 2023 by Leon Gazi. An elected head of state over the Council of Commissars — every term rated, counted and archived.</p><div class="big-bg">02</div></div>
+      <div class="m-card reveal"><div class="m-icon">⚒</div><h3>Thirteen Plus Two</h3><p>Thirteen Soviet Republics and two autonomous special regions under one constitution — including Nuristan, the autonomous monarchy founded by Pakistani Gazi.</p><img class="inline-pic" src="images/ussr-map.png" alt="Map of the Union" loading="lazy" onerror="this.remove()"><div class="big-bg">03</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="wrap">
+    <div class="stats-grid">
+      <div class="stat reveal"><b><span data-count="2019">0</span></b><span>Union Founded</span></div>
+      <div class="stat reveal"><b><span data-count="15">0</span>+</b><span>Premiers Elected</span></div>
+      <div class="stat reveal"><b><span data-count="513">0</span>K</b><span>Messages Peak Term</span></div>
+      <div class="stat reveal"><b><span data-count="7">0</span></b><span>Months of Dirty War</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="timeline-sec" id="history">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="sec-num">02 // ИСТОРИЯ</div><h2 class="sec-title reveal">MARCH OF<br><em>TIME</em></h2></div>
+      <p class="sec-desc reveal">From the founding in 2019 to the Dirty War — dates and names as recorded in the Central Committee archives.</p>
+    </div>
+    <div class="tl" id="tl">
+      <div id="tl-progress"></div>
+      <div class="tl-item reveal"><h4><small>2019</small>THE UNION IS FOUNDED</h4><p>January 9th 2019. Leon Gazi and Shadow Hokaj found the U.S.S.R. mock-government on Discord. Five years of stable rule will follow.</p></div>
+      <div class="tl-item reveal"><h4><small>2023</small>THE PREMIER SYSTEM</h4><p>March 6th 2023. Leon establishes the elected Premiership — head of state over the Council of Commissars. Pakistani Gazi takes the first term; BluMan will serve the longest at 60 days.</p></div>
+      <div class="tl-item reveal"><h4><small>2024</small>ASSASSINATION</h4><p>April 23rd 2024. Leon Gazi is cut down by KGB officers under Alexei K. Vasiliev. By his written will, Felix Dzerzhinsky — the Iron Felix — takes power.</p></div>
+      <div class="tl-item reveal"><h4><small>2024</small>BATTLE FOR THE KREMLIN</h4><p>RGES Red Guards clash with the KGB around the Kremlin. Shadow Hokaj, Joseph Stalin, Heydar Aliyev and Casreor Ricci fall — until Nuristani reinforcements under Pakistani Gazi turn the tide at the cost of his life.</p><img class="inline-pic" src="images/death-of-leon.webp" alt="Archival art of the fall of Leon" loading="lazy" onerror="this.remove()"></div>
+      <div class="tl-item reveal"><h4><small>2024</small>THE DIRTY WAR</h4><p>Seven months of treachery and oath-breaking. The Felix–Robert split, the Anti-Leon Pact and recession — ending in the November Catastrophe, with Felix comatose and claimants carving up the legacy.</p></div>
+      <div class="tl-item reveal"><h4><small>TODAY</small>UNDER KEWL</h4><p>Generalissimus Kewl Menzhinsky leads the Union today. The Central Committee keeps the full archives on the official wiki — and the Discord still stands.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="posters" id="posters">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="sec-num" style="background:#F3E9D2;color:#111">03 // ЛИЦА</div><h2 class="sec-title reveal">HALL OF<br><em>FIGURES</em></h2></div>
+      <p class="sec-desc reveal">Six faces from the Central Committee archives. Hover — every card tilts. Full biographies live on the official wiki.</p>
+    </div>
+    <div class="p-grid">
+      <div class="p-card tilt reveal"><div class="p-art p1"><strong>МИР<br>ТРУД<br>МАЙ</strong><img class="fig-photo" src="images/leon-gazi.webp" alt="Leon Gazi" loading="lazy" onerror="this.remove()"></div><div class="p-cap"><b>LEON GAZI — FATHER OF THE NATION</b><span>Generalissimus • 2019–2024</span></div></div>
+      <div class="p-card tilt reveal"><div class="p-art p2"><strong>ВПЕРЁД<br>К ЗВЁЗДАМ</strong><img class="fig-photo" src="images/hammer-sickle.webp" alt="Hammer and sickle emblem" loading="lazy" onerror="this.remove()"></div><div class="p-cap"><b>SHADOW HOKAJ — CO-FOUNDER</b><span>Old Bolshevik • Fell 2024</span></div></div>
+      <div class="p-card tilt reveal"><div class="p-art p3"><strong>СТРОЙ<br>СМЕЛО!</strong><img class="fig-photo" src="images/felix.webp" alt="Felix Dzerzhinsky" loading="lazy" onerror="this.remove()"></div><div class="p-cap"><b>FELIX DZERZHINSKY — IRON FELIX</b><span>Successor • RGES Founder</span></div></div>
+      <div class="p-card tilt reveal"><div class="p-art p4"><strong>★ СЛАВА ★<br>ТРУДУ</strong><img class="fig-photo" src="images/nuristan.png" alt="Nuristan" loading="lazy" onerror="this.remove()"></div><div class="p-cap"><b>PAKISTANI GAZI — NURISTAN</b><span>1st Premier • Fell at the Kremlin</span></div></div>
+      <div class="p-card tilt reveal"><div class="p-art p5"><strong>ЭЛЕКТРИ<br>ФИКАЦИЯ</strong><img class="fig-photo" src="images/mspsu.svg" alt="Moralistic Socialism emblem" loading="lazy" onerror="this.remove()"></div><div class="p-cap"><b>BLUMAN “BLURANGER”</b><span>Longest-Serving Premier • 60 Days</span></div></div>
+      <div class="p-card tilt reveal"><div class="p-art p6"><strong>ТЫ НУЖЕН!</strong><img class="fig-photo" src="images/kewl.png" alt="Kewl Menzhinsky" loading="lazy" onerror="this.remove()"></div><div class="p-cap"><b>KEWL MENZHINSKY</b><span>Generalissimus • Today</span></div></div>
+    </div>
+    <div style="text-align:center;margin-top:2.2rem"><a href="https://discordussr.miraheze.org/wiki/Main_Page" target="_blank" rel="noopener" class="btn btn-cream magnetic">★ Open Full Archives ★</a></div>
+  </div>
+</section>
+
+<section class="plan" id="plan">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="sec-num">04 // ВЛАСТЬ</div><h2 class="sec-title reveal">HOW THE UNION<br><em>IS RULED</em></h2></div>
+      <p class="sec-desc reveal">State, press, sword and plan — the real institutions behind the Union. Bars decorative, institutions very real.</p>
+    </div>
+    <div class="plan-box reveal">
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="t1">⚒ Industry <span>→</span></button>
+        <button class="tab-btn" data-tab="t2">★ Cosmos <span>→</span></button>
+        <button class="tab-btn" data-tab="t3">☭ Culture <span>→</span></button>
+        <button class="tab-btn" data-tab="t4">⚡ Energy <span>→</span></button>
+      </div>
+      <div class="tab-content">
+        <div class="tab-pane active" id="t1">
+          <h3 style="font-family:'Russo One';font-size:1.8rem">THE STATE</h3>
+          <p style="opacity:.8;margin-top:.4rem">The Supreme Soviet legislates, the Council of Commissars governs under the elected Premier, and the Central Committee of the MSPSU holds the line.</p>
+          <div class="bar"><div class="bar-top"><span>Central Committee</span><span>96%</span></div><div class="bar-track"><div class="bar-fill" data-w="96"></div></div></div>
+          <div class="bar"><div class="bar-top"><span>Supreme Soviet</span><span>82%</span></div><div class="bar-track"><div class="bar-fill" data-w="82"></div></div></div>
+          <div class="bar"><div class="bar-top"><span>Commissariats</span><span>91%</span></div><div class="bar-track"><div class="bar-fill" data-w="91"></div></div></div>
+        </div>
+        <div class="tab-pane" id="t2">
+          <h3 style="font-family:'Russo One';font-size:1.8rem">THE PRESS</h3>
+          <p style="opacity:.8;margin-top:.4rem">Pravda, CINS, Krasnaya Zvezda, Red Star, Sputnik and Novosti — plus Friday Sermon briefings. Quality over quantity, enforced by decree.</p>
+          <div class="bar"><div class="bar-top"><span>Pravda</span><span>100%</span></div><div class="bar-track"><div class="bar-fill" data-w="100"></div></div></div>
+          <div class="bar"><div class="bar-top"><span>Krasnaya Zvezda</span><span>88%</span></div><div class="bar-track"><div class="bar-fill" data-w="88"></div></div></div>
+          <div class="bar"><div class="bar-top"><span>CINS</span><span>94%</span></div><div class="bar-track"><div class="bar-fill" data-w="94"></div></div></div>
+        </div>
+        <div class="tab-pane" id="t3">
+          <h3 style="font-family:'Russo One';font-size:1.8rem">THE SWORD</h3>
+          <p style="opacity:.8;margin-top:.4rem">The RGES Red Guards raised by Iron Felix, the KGB intelligence apparatus, and a Red Army reborn again and again.</p>
+          <div class="bar"><div class="bar-top"><span>RGES</span><span>99%</span></div><div class="bar-track"><div class="bar-fill" data-w="99"></div></div></div>
+          <div class="bar"><div class="bar-top"><span>Red Army</span><span>76%</span></div><div class="bar-track"><div class="bar-fill" data-w="76"></div></div></div>
+          <div class="bar"><div class="bar-top"><span>March to Triumph</span><span>100%</span></div><div class="bar-track"><div class="bar-fill" data-w="100"></div></div></div>
+        </div>
+        <div class="tab-pane" id="t4">
+          <h3 style="font-family:'Russo One';font-size:1.8rem">THE PLAN</h3>
+          <p style="opacity:.8;margin-top:.4rem">GOSPLAN and GOSSTANDART run the economy — 2 Month Plans, salaries, housing taxation and state affairs, administered.</p>
+          <div class="bar"><div class="bar-top"><span>GOSPLAN</span><span>93%</span></div><div class="bar-track"><div class="bar-fill" data-w="93"></div></div></div>
+          <div class="bar"><div class="bar-top"><span>2 Month Plans</span><span>85%</span></div><div class="bar-track"><div class="bar-fill" data-w="85"></div></div></div>
+          <div class="bar"><div class="bar-top"><span>State Affairs</span><span>79%</span></div><div class="bar-track"><div class="bar-fill" data-w="79"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="factory" id="factory">
+  <div class="wrap factory-grid">
+    <div class="gears reveal">
+      <div class="gear g1">⚙</div><div class="gear g2">⚙</div><div class="gear g3">⚙</div>
+      <div style="z-index:2;background:#D20A0A;border:3px solid #F3E9D2;padding:1rem 1.6rem;font-family:'Russo One';transform:rotate(-3deg);box-shadow:6px 6px 0 #000">ЗАВОД № 1<br><span style="font-family:Oswald;font-size:.75rem;letter-spacing:.3em">PARALLAX WORKS</span></div>
+    </div>
+    <div>
+      <div class="sec-num">05 // ЗАВОД</div>
+      <h2 class="sec-title reveal" style="color:#F3E9D2">THE SHIELD<br><span style="color:#E8B44A">AND THE SWORD</span></h2>
+      <p class="reveal" style="margin-top:1rem;opacity:.85;line-height:1.7">In April 2024 the RGES held the Kremlin against the KGB — and Nuristan saved them both. Move your mouse. The factory remembers.</p>
+      <ul>
+        <li class="reveal"><i>01</i><span><b>RGES</b> — Red Guards raised by Iron Felix from Svoboda's Militsiya. They held the Kremlin.</span></li>
+        <li class="reveal"><i>02</i><span><b>KGB</b> — The intelligence apparatus with eyes in every nation — until Vasiliev turned it on Leon.</span></li>
+        <li class="reveal"><i>03</i><span><b>NURISTAN</b> — The autonomous monarchy whose reinforcements broke the Kremlin siege.</span></li>
+      </ul>
+      <div class="reveal" style="margin-top:1.6rem;display:flex;gap:1rem;flex-wrap:wrap">
+        <a href="https://discord.gg/soviets" target="_blank" rel="noopener" class="btn btn-red magnetic">⚙ Join Discord</a>
+        <a href="#top" class="btn magnetic" style="background:transparent;border-color:#F3E9D2" data-scroll>↑ Back to top</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="voices">
+  <div class="wrap">
+    <div class="sec-head" style="justify-content:center;text-align:center">
+      <div style="width:100%"><div class="sec-num" style="background:#111;color:#E8B44A">06 // АРХИВ</div><h2 class="sec-title reveal">FROM THE ARCHIVES</h2></div>
+    </div>
+    <div class="slider reveal" id="slider">
+      <div class="slide active"><p>Announcements under Generalissimus Leon — the featured archive: the Premier System decree of March 2023 down to the last orders of April 2024.</p><footer>— <a href="https://discordussr.miraheze.org/wiki/Announcements_under_Generalissimus_Leon" target="_blank" rel="noopener">ARCHIVE ★ ANNOUNCEMENTS</a></footer></div>
+      <div class="slide"><p>The Hall of Premiers records every elected head of state — terms rated, activity counted, from Pakistani Gazi to the present day.</p><footer>— <a href="https://discordussr.miraheze.org/wiki/Hall_of_Premiers" target="_blank" rel="noopener">ARCHIVE ★ PREMIERS</a></footer></div>
+      <div class="slide"><p>The Dirty War: April 23rd to November 27th 2024. Seven months of betrayal, Kremlin battles and the fall of the old guard.</p><footer>— <a href="https://discordussr.miraheze.org/wiki/The_Dirty_War" target="_blank" rel="noopener">ARCHIVE ★ DIRTY WAR</a></footer></div>
+      <div class="slide"><p>Leon Gazi — Father of the Nation. Generalissimus from January 9th 2019 until his assassination on April 23rd 2024.</p><footer>— <a href="https://discordussr.miraheze.org/wiki/Leon_Gazi" target="_blank" rel="noopener">ARCHIVE ★ LEON GAZI</a></footer></div>
+    </div>
+    <div class="slider-nav" id="sliderNav"></div>
+  </div>
+</section>
+
+<section class="join" id="join">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="sec-num">07 // ВСТУПАЙ</div><h2 class="sec-title reveal">ENLIST IN<br><em>THE FUTURE</em></h2></div>
+      <p class="sec-desc reveal">No forms. No role choosing. One click — straight to the Discord. See you in the ranks, comrade.</p>
+    </div>
+    <div class="join-card reveal">
+      <div class="join-left">
+        <h3>ТВОЙ БИЛЕТ<br>В ЗАВТРА</h3>
+        <p>Founded January 9th 2019 by Leon Gazi and Shadow Hokaj. Led today by Generalissimus Kewl Menzhinsky. One invite, zero paperwork.</p>
+        <div class="id-card">
+          <div class="id-photo"><img src="images/flag-ussr.webp" alt="Flag of the USSR" style="width:100%;height:100%;object-fit:cover" onerror="this.remove()"></div>
+          <div><b style="font-family:'Russo One'">DISCORD.GG/SOVIETS</b><br><span style="font-size:.8rem;letter-spacing:.15em">RANK: COMRADE ON ARRIVAL</span></div>
+        </div>
+        <div style="margin-top:1.4rem;display:flex;gap:.6rem;flex-wrap:wrap">
+          <span style="background:#111;color:#E8B44A;padding:.35rem .8rem;font-size:.75rem;letter-spacing:.2em">★ DIRECT LINK</span>
+          <span style="background:#F3E9D2;color:#111;padding:.35rem .8rem;font-size:.75rem;letter-spacing:.2em">☭ NO ROLES</span>
+        </div>
+      </div>
+      <div class="join-right">
+        <h3 style="font-family:'Russo One';font-size:1.9rem;line-height:1;margin-bottom:.6rem">ONE CLICK.<br>NO CHOOSING.</h3>
+        <p style="opacity:.8;line-height:1.6;margin-bottom:1.4rem">One invite, zero paperwork. Read the lore above — then take your place in the ranks.</p>
+        <a href="https://discord.gg/soviets" target="_blank" rel="noopener" class="btn btn-red magnetic" style="width:100%;justify-content:center;font-size:1.1rem;padding:1.1rem">★ JOIN DISCORD.GG/SOVIETS ★</a>
+        <div class="discord-box" style="margin-top:1rem">
+          <code>discord.gg/soviets</code>
+          <button type="button" class="btn btn-gold magnetic" id="copyDiscord" style="padding:.55rem 1rem">COPY</button>
+        </div>
+        <p style="margin-top:.9rem;font-size:.8rem;letter-spacing:.12em;text-align:center;opacity:.7">OPENS IN DISCORD APP / BROWSER • NO SIGN-UP ON THIS SITE</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap" style="padding-bottom:0">
+    <div class="foot-big" id="footBig">★ CCCP ★</div>
+  </div>
+  <div class="foot-grid">
+    <div><h5>★ Union of Tomorrow</h5><p style="opacity:.75;line-height:1.7;max-width:320px">Lore archive of the Discord U.S.S.R. mock-government, est. 2019. Full records live on the official Central Committee wiki. Portraits: Central Committee wiki (CC BY-SA 4.0).</p></div>
+    <div><h5>Navigate</h5><a href="#manifesto">Doctrine</a><a href="#history">History</a><a href="#posters">Figures</a><a href="#plan">Government</a></div>
+    <div><h5>Slogans</h5><a href="#top">Peace!</a><a href="#top">Labour!</a><a href="#top">May!</a><a href="#top">Smooth!</a></div>
+    <div><h5>Contact</h5><a href="https://discordussr.miraheze.org/wiki/Main_Page" target="_blank" rel="noopener">Wiki — Main Archive</a><a href="https://discordussr.miraheze.org/wiki/Hall_of_Premiers" target="_blank" rel="noopener">Hall of Premiers</a><a href="https://discord.gg/soviets" target="_blank" rel="noopener">discord.gg/soviets</a></div>
+  </div>
+  <div class="foot-bottom">© 2019–2026 U.S.S.R. MOCK-GOVERNMENT • CENTRAL COMMITTEE ARCHIVES • <span id="year"></span></div>
+</footer>
+
+<button id="toTop" aria-label="top">↑</button>
+<div id="toast">★ Opening discord.gg/soviets… ★</div>
+
+<script>
+// ---------- PRELOADER ----------
+let p=0;
+const preCount=document.getElementById('preCount'), preFill=document.getElementById('preFill');
+const preInt=setInterval(()=>{
+  p+=Math.random()*14;
+  if(p>=100){p=100;clearInterval(preInt);setTimeout(finishLoad,350)}
+  preCount.textContent=Math.floor(p);
+  preFill.style.width=p+'%';
+},120);
+function finishLoad(){
+  document.getElementById('preloader').classList.add('done');
+  setTimeout(()=>document.getElementById('preloader').remove(),1100);
+  initAnims();
+}
+
+// ---------- CLOCK / YEAR ----------
+setInterval(()=>{document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-GB',{timeZone:'Europe/Moscow'})},1000);
+document.getElementById('year').textContent=new Date().getFullYear();
+
+// ---------- MARQUEES ----------
+const words1=['MORALISTIC SOCIALISM','★','LEON GAZI 2019–2024','★','THE PREMIER SYSTEM','★','THIRTEEN REPUBLICS','★'];
+const words2=['THE DIRTY WAR','☭','BATTLE FOR THE KREMLIN','★','HALL OF PREMIERS','★','NURISTAN STANDS','★'];
+document.getElementById('mq1').innerHTML=(words1.map(w=>`<span>${w}</span>`).join('')).repeat(4);
+document.getElementById('mq2').innerHTML=(words2.map(w=>`<span>${w}</span>`).join('')).repeat(4);
+
+// ---------- LENIS SMOOTH ----------
+let lenis=null;
+try{
+  lenis=new Lenis({duration:1.25,smoothWheel:true});
+  function raf(t){lenis.raf(t);requestAnimationFrame(raf)}
+  requestAnimationFrame(raf);
+}catch(e){}
+gsap.registerPlugin(ScrollTrigger);
+if(lenis){lenis.on('scroll',ScrollTrigger.update)}
+
+// anchor smooth (skip external discord links)
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const id=a.getAttribute('href');
+    const el=document.querySelector(id);
+    if(!el) return;
+    e.preventDefault();
+    document.getElementById('navLinks').classList.remove('mobile');
+    document.getElementById('closeMenu').style.display='none';
+    if(lenis) lenis.scrollTo(el,{offset:-70}); else el.scrollIntoView({behavior:'smooth'});
+  });
+});
+
+// ---------- CURSOR ----------
+const cur=document.getElementById('cursor'), ring=document.getElementById('ring');
+let mx=innerWidth/2,my=innerHeight/2,rx=mx,ry=my;
+addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function ringLoop(){rx+=(mx-rx)*.16;ry+=(my-ry)*.16;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(ringLoop)})();
+document.querySelectorAll('a,.btn,.tab-btn,.p-card,.s-dot,.burger').forEach(el=>{
+  el.addEventListener('mouseenter',()=>cur.classList.add('hovering'));
+  el.addEventListener('mouseleave',()=>cur.classList.remove('hovering'));
+});
+
+// ---------- MAGNETIC ----------
+document.querySelectorAll('.magnetic').forEach(btn=>{
+  btn.addEventListener('mousemove',e=>{
+    const r=btn.getBoundingClientRect();
+    const x=e.clientX-r.left-r.width/2, y=e.clientY-r.top-r.height/2;
+    btn.style.transform=`translate(${x*.18}px,${y*.18}px)`;
+  });
+  btn.addEventListener('mouseleave',()=>btn.style.transform='');
+});
+
+// ---------- 3D TILT ----------
+document.querySelectorAll('.tilt,.poster-big').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const px=(e.clientX-r.left)/r.width-.5, py=(e.clientY-r.top)/r.height-.5;
+    card.style.transform=`perspective(900px) rotateY(${px*14}deg) rotateX(${-py*14}deg) scale(1.03)`;
+  });
+  card.addEventListener('mouseleave',()=>card.style.transform='');
+});
+
+// ---------- HERO TITLE SPLIT ----------
+(function(){
+  const h=document.getElementById('heroTitle');
+  h.innerHTML=h.innerHTML.replace(/([А-ЯA-ZA-Z])/g,'<span class="line-mask"><span class="char">$1</span></span>');
+  gsap.to('.char',{translateY:'0%',opacity:1,duration:.8,stagger:.025,ease:'power4.out',delay:1.5});
+})();
+
+// ---------- SCROLL ANIMS ----------
+function initAnims(){
+  document.querySelectorAll('.reveal').forEach(el=>{
+    gsap.fromTo(el,{opacity:0,y:50},{opacity:1,y:0,duration:.9,ease:'power3.out',
+      scrollTrigger:{trigger:el,start:'top 88%'}});
+  });
+  const prog=document.getElementById('progress'), toTop=document.getElementById('toTop'), tlP=document.getElementById('tl-progress');
+  function onScroll(){
+    const y=window.scrollY, h=document.documentElement.scrollHeight-innerHeight;
+    prog.style.width=(y/h*100)+'%';
+    toTop.classList.toggle('show',y>700);
+    const tl=document.getElementById('tl');
+    if(tl){
+      const r=tl.getBoundingClientRect();
+      const total=r.height, done=Math.min(Math.max(innerHeight*.6-r.top,0),total);
+      tlP.style.height=(done/total*100)+'%';
+    }
+  }
+  addEventListener('scroll',onScroll,{passive:true}); onScroll();
+  toTop.onclick=()=>{if(lenis)lenis.scrollTo(0);else scrollTo({top:0,behavior:'smooth'})};
+
+  document.querySelectorAll('[data-count]').forEach(el=>{
+    const target=+el.dataset.count;
+    ScrollTrigger.create({trigger:el,start:'top 90%',once:true,onEnter(){
+      gsap.fromTo(el,{innerText:0},{innerText:target,duration:2,ease:'power2.out',snap:{innerText:1},
+        onUpdate(){el.textContent=Math.floor(+el.textContent).toLocaleString()}});
+    }});
+  });
+  document.querySelectorAll('.bar-fill').forEach(b=>{
+    ScrollTrigger.create({trigger:b,start:'top 92%',once:true,onEnter(){b.style.width=b.dataset.w+'%'}});
+  });
+  gsap.to('#footBig',{xPercent:-8,scrollTrigger:{trigger:'footer',scrub:1,start:'top bottom',end:'bottom bottom'}});
+  let vel=1;
+  if(lenis) lenis.on('scroll',e=>{vel=1+Math.min(Math.abs(e.velocity||0)*.15,4);
+    document.querySelectorAll('.gear').forEach(g=>g.style.animationDuration=(10/vel)+'s');
+  });
+  addEventListener('mousemove',e=>{
+    const x=(e.clientX/innerWidth-.5), y=(e.clientY/innerHeight-.5);
+    gsap.to('.hero-left',{x:x*18,y:y*12,duration:.6});
+    gsap.to('#tiltPoster',{x:x*-26,y:y*-18,duration:.7});
+  });
+}
+
+// ---------- TABS ----------
+document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  const pane=document.getElementById(b.dataset.tab);
+  pane.classList.add('active');
+  pane.querySelectorAll('.bar-fill').forEach(f=>{f.style.width='0%';setTimeout(()=>f.style.width=f.dataset.w+'%',80)});
+}));
+
+// ---------- SLIDER ----------
+const slides=[...document.querySelectorAll('.slide')], nav=document.getElementById('sliderNav');
+let cur2=0, timer;
+slides.forEach((_,i)=>{
+  const d=document.createElement('button');d.className='s-dot'+(i===0?' active':'');d.setAttribute('aria-label','slide '+(i+1));
+  d.onclick=()=>go(i,true);nav.appendChild(d);
+});
+function go(i,manual){
+  slides[cur2].classList.remove('active');nav.children[cur2].classList.remove('active');
+  cur2=i;slides[cur2].classList.add('active');nav.children[cur2].classList.add('active');
+  if(manual){clearInterval(timer);auto()}
+}
+function auto(){timer=setInterval(()=>go((cur2+1)%slides.length),4200)}
+auto();
+
+// ---------- MENU ----------
+const burger=document.getElementById('burger'), links=document.getElementById('navLinks'), closeM=document.getElementById('closeMenu');
+burger.onclick=()=>{links.classList.add('mobile');closeM.style.display='block'};
+closeM.onclick=()=>{links.classList.remove('mobile');closeM.style.display='none'};
+
+// ---------- COPY DISCORD ----------
+document.getElementById('copyDiscord').addEventListener('click',async()=>{
+  const t=document.getElementById('toast');
+  try{ await navigator.clipboard.writeText('https://discord.gg/soviets'); t.textContent='★ COPIED: discord.gg/soviets ★'; }
+  catch(e){ t.textContent='★ discord.gg/soviets ★'; }
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+});
+// active nav highlight
+const secs=['manifesto','history','posters','plan','factory','join'];
+addEventListener('scroll',()=>{
+  let cur3='';
+  secs.forEach(id=>{const el=document.getElementById(id);if(el&&scrollY>=el.offsetTop-140)cur3=id});
+  document.querySelectorAll('[data-link]').forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur3));
+},{passive:true});
+</script>
+</body>
+</html>
